@@ -21,21 +21,31 @@ public class BOIDMovement
 
     public void Init()
     {
-        dir = (new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f))).normalized;
+        dir = Random.insideUnitCircle.normalized;
         alignmentDir = Vector2.zero;
         boidCenterDir = Vector2.zero;
     }
 
     public void Move()
     {
+        //Debug.Log("Clear Path " + clearPathDir);
+        //.Log(clearPathDir);
         Vector2 changeVector = (dirChangeDueToObstacle * clearPathDir + boidCenterDir * dirChangeDueToCenter + alignmentDir * dirChangeDueToAlignment)/3;
+        //Debug.Log(changeVector);
         dir = ((dir + changeVector)/2).normalized;
         transform.rotation = Quaternion.FromToRotation(Vector2.up, dir);
-        rigid.velocity = speed*dir;
-    }
+        rigid.velocity = speed * dir;   
+     }
 
     public void SetCenterOfBOIDS(Vector2 center)
     {
-
+        boidCenterDir = center;
+    }
+    public void SetAlignmentOfBOIDS(Vector2 alignment) {
+        alignmentDir = alignment;
+    }
+    public void SetClearPath(Vector2 path)
+    {
+        clearPathDir = path;
     }
 }
